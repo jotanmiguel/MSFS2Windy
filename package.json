@@ -1,7 +1,7 @@
 {
-    "name": "windy-plugin-template",
-    "version": "4.2.2",
-    "description": "Template for developing Windy Plugins",
+    "name": "MSFS2Windy",
+    "version": "0.1",
+    "description": "Get airplane position from Microsoft Flight Simulator 2020 and show it on Windy.com map.",
     "main": "dist/plugin.min.js",
     "type": "module",
     "scripts": {
@@ -20,17 +20,21 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/windycom/windy-plugin-template.git"
+        "url": "git+https://github.com/jotanmiguel/MSFS2Windy.git"
     },
     "keywords": [
         "windy",
         "windy.com",
-        "plugins"
+        "plugins",
+        "MSFS2020",
+        "Microsoft Flight Simulator",
+        "aviation",
+        "flight"
     ],
-    "author": "Windyty, S.E.",
+    "author": "João Oliveira",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/windycom/windy-plugin-template/issues"
+        "url": "https://github.com/jotanmiguel/MSFS2Windy/issues"
     },
     "homepage": "https://docs.windy-plugins.com/",
     "dependencies": {

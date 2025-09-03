@@ -1,0 +1,13 @@
+{
+    "lat": 38.7742,
+    "lon": -9.1342,
+    "altitude_ft_msl": 3500,
+    "altitude_ft_agl": 2500,
+    "heading_deg": 87.5,
+    "ground_speed_kt": 210,
+    "indicated_airspeed_kt": 200,
+    "vertical_speed_fpm": 500,
+    "timestamp": "2025-09-01T18:00:00Z",
+    "flight_number": "TAP123",
+    "aircraft_type": "A320"
+}
