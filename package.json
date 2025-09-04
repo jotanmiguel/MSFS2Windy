@@ -42,11 +42,13 @@
         "@windycom/plugin-devtools": "^3.0.1"
     },
     "devDependencies": {
+        "@sveltejs/vite-plugin-svelte": "^6.1.4",
         "@testing-library/jest-dom": "^6.8.0",
         "@testing-library/svelte": "^5.2.8",
         "jsdom": "^26.1.0",
         "svelte": "^5.38.6",
         "svelte-preprocess": "^6.0.3",
+        "vite": "^7.1.4",
         "vitest": "^3.2.4"
     }
 }
