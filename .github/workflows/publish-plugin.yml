@@ -10,8 +10,8 @@ jobs:
   bump-version:
     runs-on: ubuntu-latest
     outputs:
-      new-version: ${{ steps.bump.outputs.new_version }}
-
+      new-version: ${{ steps.bump.outputs.newTag }}
+      
     steps:
       - uses: actions/checkout@v3
 
