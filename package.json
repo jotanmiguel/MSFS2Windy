@@ -1,6 +1,6 @@
 {
     "name": "MSFS2Windy",
-    "version": "0.1.0",
+    "version": "0.1.7",
     "description": "Get airplane position from Microsoft Flight Simulator 2020 and show it on Windy.com map.",
     "main": "dist/plugin.min.js",
     "type": "module",
