@@ -77,7 +77,7 @@
     import { followIcon } from './followIcon';
     import { onMount, onDestroy } from 'svelte';
 
-    import type { Aircraft } from './aircraftType';
+    import type { Aircraft, VatsimPilot } from './aircraftType';
     import type { ExtendedMarker } from './aircraftType';
     import { fromLocalAircraft, fromVatsimPilot } from './aircraftType';
 
@@ -207,7 +207,7 @@
             const vatsimRaw = await fetch('https://data.vatsim.net/v3/vatsim-data.json')
                 .then(r => r.json());
             
-            vatsimRaw.pilots.forEach((p) => {
+            vatsimRaw.pilots.forEach((p: VatsimPilot) => {
                 if (trackedIds.includes(String(p.cid)) || trackedIds.includes(p.callsign)) {
                     const ac = fromVatsimPilot(p);
                     const pos = ac.position;
@@ -344,7 +344,6 @@
         window.removeEventListener('mouseup', stopDrag);
     }
 
-
     export const onopen = () => {
         map.setView([14, -29], 4);
         store.set('overlay', 'wind');
@@ -361,7 +360,6 @@
 
         showList = true;
     };
-
 
     onMount(() => {
         map.on('zoom', updateIconStyles);

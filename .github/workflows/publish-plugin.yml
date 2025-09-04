@@ -40,10 +40,8 @@ jobs:
 
           cd dist
 
-          # Força a versão correta no plugin.json
           jq --arg ver "$VERSION" '.version = $ver' plugin.json > plugin.tmp && mv plugin.tmp plugin.json
 
-          # Adiciona info extra
           echo "{\"repositoryName\": \"${{ github.repository }}\", \"commitSha\": \"${{ github.sha }}\", \"repositoryOwner\": \"${{ github.repository_owner }}\"}" > /tmp/plugin-info.json
           jq -s '.[0] * .[1]' plugin.json /tmp/plugin-info.json > plugin.tmp && mv plugin.tmp plugin.json
 
