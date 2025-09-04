@@ -29,10 +29,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: bump-version
     env:
-      WINDY_API_KEY: '${{ secrets.WINDY_API_KEY }}'
+      WINDY_API_KEY: ${{ secrets.WINDY_API_KEY }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -52,7 +52,7 @@ jobs:
         if: success()
         run: |
           VERSION="${{ needs.bump-version.outputs.new-version }}"
-          echo "Publishing version $VERSION"
+          echo "📦 Publishing plugin version $VERSION"
 
           if [ -z "$VERSION" ]; then
             echo "❌ ERROR: VERSION is empty" >&2
@@ -61,17 +61,17 @@ jobs:
 
           cd dist
 
+          # Atualizar a versão no plugin.json
           jq --arg ver "$VERSION" '.version = $ver' plugin.json > plugin.tmp && mv plugin.tmp plugin.json
 
+          # Adicionar metainfo extra
           echo "{\"repositoryName\": \"${{ github.repository }}\", \"commitSha\": \"${{ github.sha }}\", \"repositoryOwner\": \"${{ github.repository_owner }}\"}" > /tmp/plugin-info.json
           jq -s '.[0] * .[1]' plugin.json /tmp/plugin-info.json > plugin.tmp && mv plugin.tmp plugin.json
 
-          echo "Creating plugin archive..."
+          echo "📦 Creating plugin archive..."
           tar cf ../plugin.tar .
 
-          echo "Publishing plugin..."
+          echo "🚀 Publishing plugin to Windy..."
           curl -s --fail-with-body -XPOST 'https://node.windy.com/plugins/v1.0/upload' \
-              -H "x-windy-api-key: ${WINDY_API_KEY}" \
-              -F "plugin_archive=@../plugin.tar"
-
-
+            -H "x-windy-api-key: ${WINDY_API_KEY}" \
+            -F "plugin_archive=@../plugin.tar"
