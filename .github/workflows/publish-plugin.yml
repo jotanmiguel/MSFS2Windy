@@ -7,23 +7,6 @@ on:
       - main
 
 jobs:
-  bump-version:
-    runs-on: ubuntu-latest
-    outputs:
-      new-version: ${{ steps.bump.outputs.new_version }}
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Bump version
-        id: bump
-        uses: phips28/gh-action-bump-version@v11.0.7
-        with:
-          tag-prefix: 'v'
-          commit-message: 'ci: bump version to {{version}}'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
   publish-plugin:
     runs-on: ubuntu-latest
     env:
@@ -51,11 +34,24 @@ jobs:
             echo "Secret WINDY_API_KEY is not configured" >&2
             exit 1
           fi
+
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Publishing version $VERSION"
+
           cd dist
-          echo "Creating plugin archive..."
+
+          # Força a versão correta no plugin.json
+          jq --arg ver "$VERSION" '.version = $ver' plugin.json > plugin.tmp && mv plugin.tmp plugin.json
+
+          # Adiciona info extra
           echo "{\"repositoryName\": \"${{ github.repository }}\", \"commitSha\": \"${{ github.sha }}\", \"repositoryOwner\": \"${{ github.repository_owner }}\"}" > /tmp/plugin-info.json
-          mv plugin.json /tmp
-          jq -s '.[0] * .[1]' /tmp/plugin.json /tmp/plugin-info.json > plugin.json
+          jq -s '.[0] * .[1]' plugin.json /tmp/plugin-info.json > plugin.tmp && mv plugin.tmp plugin.json
+
+          echo "Creating plugin archive..."
           tar cf ../plugin.tar .
+
           echo "Publishing plugin..."
-          curl -s --fail-with-body -XPOST 'https://node.windy.com/plugins/v1.0/upload' -H "x-windy-api-key: ${WINDY_API_KEY}" -F "plugin_archive=@../plugin.tar"
+          curl -s --fail-with-body -XPOST 'https://node.windy.com/plugins/v1.0/upload' \
+              -H "x-windy-api-key: ${WINDY_API_KEY}" \
+              -F "plugin_archive=@../plugin.tar"
+
