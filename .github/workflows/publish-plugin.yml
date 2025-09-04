@@ -50,13 +50,20 @@ jobs:
       - name: Publish Plugin
         if: success()
         run: |
-          VERSION="${{ needs.bump-version.outputs.new-version }}"
+          if [ -z "$WINDY_API_KEY" ]; then
+            echo "Secret WINDY_API_KEY is not configured" >&2
+            exit 1
+          fi
+
+          VERSION=$(node -p "require('./package.json').version")
           echo "Publishing version $VERSION"
 
           cd dist
 
+          # Força a versão correta no plugin.json
           jq --arg ver "$VERSION" '.version = $ver' plugin.json > plugin.tmp && mv plugin.tmp plugin.json
 
+          # Adiciona info extra
           echo "{\"repositoryName\": \"${{ github.repository }}\", \"commitSha\": \"${{ github.sha }}\", \"repositoryOwner\": \"${{ github.repository_owner }}\"}" > /tmp/plugin-info.json
           jq -s '.[0] * .[1]' plugin.json /tmp/plugin-info.json > plugin.tmp && mv plugin.tmp plugin.json
 
@@ -67,5 +74,4 @@ jobs:
           curl -s --fail-with-body -XPOST 'https://node.windy.com/plugins/v1.0/upload' \
               -H "x-windy-api-key: ${WINDY_API_KEY}" \
               -F "plugin_archive=@../plugin.tar"
-
 
