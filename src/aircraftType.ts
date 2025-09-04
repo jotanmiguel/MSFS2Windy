@@ -9,7 +9,7 @@ export interface Aircraft {
     sea_level_pressure: number;
     true_airspeed: number;
     vertical_speed: number;
-    track: [position: [number, number]][];
+    track: [number, number][];
     callsign?: string;
     source: "local" | "vatsim";
 }

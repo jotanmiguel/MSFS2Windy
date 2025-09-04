@@ -39,5 +39,11 @@
     "homepage": "https://docs.windy-plugins.com/",
     "dependencies": {
         "@windycom/plugin-devtools": "^3.0.1"
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^6.8.0",
+        "@testing-library/svelte": "^5.2.8",
+        "jsdom": "^26.1.0",
+        "vitest": "^3.2.4"
     }
 }
