@@ -52,6 +52,12 @@ jobs:
             exit 1
           fi
           cd dist
+
+          VERSION=$(node -p "require('../package.json').version")
+          echo "Publishing version $VERSION"
+          
+          echo "{\"version\": \"$VERSION\", \"repositoryName\": \"${{ github.repository }}\", \"commitSha\": \"${{ github.sha }}\", \"repositoryOwner\": \"${{ github.repository_owner }}\"}" > /tmp/plugin-info.json
+          
           echo "Creating plugin archive..."
           echo "{\"repositoryName\": \"${{ github.repository }}\", \"commitSha\": \"${{ github.sha }}\", \"repositoryOwner\": \"${{ github.repository_owner }}\"}" > /tmp/plugin-info.json
           mv plugin.json /tmp
