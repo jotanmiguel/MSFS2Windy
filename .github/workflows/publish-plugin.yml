@@ -50,12 +50,7 @@ jobs:
       - name: Publish Plugin
         if: success()
         run: |
-          if [ -z "$WINDY_API_KEY" ]; then
-            echo "Secret WINDY_API_KEY is not configured" >&2
-            exit 1
-          fi
-
-          VERSION=$(node -p "require('./package.json').version")
+          VERSION="${{ needs.bump-version.outputs.new-version }}"
           echo "Publishing version $VERSION"
 
           cd dist
@@ -72,4 +67,5 @@ jobs:
           curl -s --fail-with-body -XPOST 'https://node.windy.com/plugins/v1.0/upload' \
               -H "x-windy-api-key: ${WINDY_API_KEY}" \
               -F "plugin_archive=@../plugin.tar"
+
 
