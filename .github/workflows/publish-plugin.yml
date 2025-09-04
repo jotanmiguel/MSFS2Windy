@@ -10,8 +10,7 @@ jobs:
   bump-version:
     runs-on: ubuntu-latest
     outputs:
-      new-version: ${{ steps.bump.outputs.newVersion }}
-      new-tag: ${{ steps.bump.outputs.newTag }}
+      new-version: ${{ steps.set-version.outputs.version }}
 
     steps:
       - uses: actions/checkout@v3
@@ -24,6 +23,13 @@ jobs:
           commit-message: 'ci: bump version to {{version}}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get bumped version
+        id: set-version
+        run: |
+          VERSION=$(jq -r '.version' package.json)
+          echo "Detected version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
   publish-plugin:
     runs-on: ubuntu-latest
